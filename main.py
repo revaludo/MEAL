@@ -419,10 +419,11 @@ class MEAL():
                 print(i, k, np.shape(weights[k]))
                 self.sess.run(self.parameters[i].assign(weights[k]))
 
-        batchu,batchv,batchp,batchpl,batchuv,batchm,ufactors,vfactors=generatebatch(img_file,label_file,matrix_file,self.batch_num)
+        batchgen=generatebatch(img_file,label_file,matrix_file,self.batch_num)
 
         for epoch in range(1000):
             for i in range(self.batch_num):
+                batchu, batchv, batchp, batchpl, batchuv, batchm, ufactors, vfactors=next(batchgen)
                 if epoch<300:
                     _,loss1,ebds=self.sess.run([self.train_op1,self.lossp,self.output],
                                   feed_dict={self.imgs: batchp, self.labels: batchpl})
